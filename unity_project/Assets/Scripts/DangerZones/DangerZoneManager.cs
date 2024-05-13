@@ -10,8 +10,6 @@ public class DangerZoneManager : MonoBehaviour
     public GameObject dangerMessage;
     public Transform robody;
     private RobodyMovement robodyM;
-    private float outerRange = 4;
-    public float innerRange = 3;
     private int dangerZoneCurrent;
 
     private Color color;
@@ -30,9 +28,13 @@ public class DangerZoneManager : MonoBehaviour
         for (int i = 0; i < dangerZones.Length; i++)
         {
             DangerZone current = dangerZones[i].GetComponent<DangerZone>();
-            float distance = Vector3.Distance(robody.transform.position, current.getPos());
+            Vector3 roboyPos = robody.transform.position;
+            roboyPos.y = 0;
+            Vector3 currentPos = current.getPos();
+            currentPos.y = 0;
+            float distance = Vector3.Distance(roboyPos, currentPos);
 
-            if (distance <= innerRange)
+            if (distance <= current.GetInnerRange())
             {
                 dangerZones[i].GetComponent<Light>().color = Color.red;
                 if (!current.getUserWantsToMoveOn())
@@ -41,7 +43,16 @@ public class DangerZoneManager : MonoBehaviour
 
                 }
             }
-            else if (distance <= outerRange)
+            /*if (current.getCollided())
+            {
+                dangerZones[i].GetComponent<Light>().color = Color.red;
+                if (!current.getUserWantsToMoveOn())
+                {
+                    StopRobot(i);
+
+                }
+            }*/
+            else if (distance <= current.GetOuterRange())
             {
                 dangerZones[i].GetComponent<Light>().color = Color.red;
                 robodyM.steerSpeed = 0.5f;
@@ -54,10 +65,13 @@ public class DangerZoneManager : MonoBehaviour
             {
                 robodyM.steerSpeed = 1f;
                 dangerZones[i].GetComponent<Light>().color = color;
+                current.setUserWantsToMoveOn(false);
             }
         }
        
     }
+
+
     public void StopRobot(int i)
     {
         dangerZoneCurrent = i;

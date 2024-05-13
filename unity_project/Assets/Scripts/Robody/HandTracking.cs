@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.XR;
+using Vector2 = UnityEngine.Vector2;
+using Vector3 = UnityEngine.Vector3;
 
 public class HandTracking : MonoBehaviour
 {
@@ -32,22 +35,23 @@ public class HandTracking : MonoBehaviour
     public float Q = 0.0001f;
     public float R = 0.01f;
     Vector3 kalmanFilter = new Vector3();
-    private Camera camera;
+    public Camera camera;
     //difference from camera corner to max/min hand position
     private float offset = 4;
     Vector3[] handPointsTmp = new Vector3[21];
     public GameObject[] dangerZones;
+    public GameObject bottel;
+    public GameObject Roboy;
 
     private void Start()
     {
         kalmanFilter = new Vector3(Q, R);
-        camera = Camera.main;
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*string data = GlobalVariableManager.Instance.HandLandmarksRaw;
+       /* string data = GlobalVariableManager.Instance.HandLandmarksRaw;
         if (data.Length < 1) return;
         
         for (int i = 0; i < data.Length; i++)
@@ -89,10 +93,29 @@ public class HandTracking : MonoBehaviour
         // trackedPalmLength = Vector3.Distance(handPointsTranslations[0], handPointsTranslations[5]);
         float handScale = palmLength / trackedPalmLength;
 
-        for (int i = 0; i < 21; i++)
-        {
-            handPointsTranslations[i] *= handScale;
-            HandPoints[i].transform.localPosition = handPointsTranslations[i];
+        if(CanMoveHand()){
+            for (int i = 0; i < 21; i++)
+            {
+                bool[] canMoveFinger = this.canMoveFinger(i);
+                Vector3 tmp = HandPoints[i].transform.localPosition;
+                if (canMoveFinger[0])
+                {
+                    handPointsTranslations[i].x *= handScale;
+                    tmp.x = handPointsTranslations[i].x;
+                }
+                if (canMoveFinger[1])
+                {
+                    handPointsTranslations[i].y *= handScale;
+                    tmp.y = handPointsTranslations[i].y;
+                }
+                if (canMoveFinger[2])
+                {
+                    handPointsTranslations[i].z *= handScale;
+                    tmp.z = handPointsTranslations[i].z;
+                }
+                HandPoints[i].transform.localPosition = tmp;
+                
+            }
         }
 
         handRootTranslation *= handScale;
@@ -107,55 +130,61 @@ public class HandTracking : MonoBehaviour
 
     void UpdateLines()
     {
-        //only move hand iff all lines of hand are inside the camera view
-        if(CanMoveHand()){
-            for (int i = 0; i < 21; i++)
+        for (int i = 0; i < 21; i++)
+        {
+            if (i == 4 || i == 16)
             {
-                if (i == 4 || i == 16)
-                {
-                    float length = Vector3.Distance(handPointsTranslations[0], handPointsTranslations[i + 1]);
-                    Vector3 forward = (handPointsTranslations[i + 1] - handPointsTranslations[0]).normalized;
-                    setPosition(i, forward, length);
-                }
+                float length = Vector3.Distance(handPointsTranslations[0], handPointsTranslations[i + 1]);
+                Vector3 forward = (handPointsTranslations[i + 1] - handPointsTranslations[0]).normalized;
 
-                else if (i == 8 || i == 12)
-                {
-                    float length = Vector3.Distance(handPointsTranslations[i - 3], handPointsTranslations[i + 1]);
-                    Vector3 forward = (handPointsTranslations[i + 1] - handPointsTranslations[i - 3]).normalized;
-                    setPosition(i - 3, forward, length);
+                HandLines[i].transform.localPosition = handPointsTranslations[0];
+                HandLines[i].transform.forward = forward;
+                HandLines[i].transform.localScale = new Vector3(length, length, length);
+            }
 
-                }
+            else if (i == 8 || i == 12)
+            {
+                float length = Vector3.Distance(handPointsTranslations[i - 3], handPointsTranslations[i + 1]);
+                Vector3 forward = (handPointsTranslations[i + 1] - handPointsTranslations[i - 3]).normalized;
 
-                else if (i == 20)
-                {
-                    float length = Vector3.Distance(handPointsTranslations[13], handPointsTranslations[17]);
-                    Vector3 forward = (handPointsTranslations[17] - handPointsTranslations[13]).normalized;
-                    setPosition(13, forward, length);
-                }
+                HandLines[i].transform.localPosition = handPointsTranslations[i - 3];
+                HandLines[i].transform.forward = forward;
+                HandLines[i].transform.localScale = new Vector3(length, length, length);
 
-                else
-                {
-                    float length = Vector3.Distance(handPointsTranslations[i], handPointsTranslations[i + 1]);
-                    Vector3 forward = (handPointsTranslations[i + 1] - handPointsTranslations[i]).normalized;
-                    setPosition(i, forward, length);
+            }
 
-                }
+            else if (i == 20)
+            {
+                float length = Vector3.Distance(handPointsTranslations[13], handPointsTranslations[17]);
+                Vector3 forward = (handPointsTranslations[17] - handPointsTranslations[13]).normalized;
+
+                HandLines[i].transform.localPosition = handPointsTranslations[13];
+                HandLines[i].transform.forward = forward;
+                HandLines[i].transform.localScale = new Vector3(length, length, length);
+
+            }
+
+            else
+            {
+                float length = Vector3.Distance(handPointsTranslations[i], handPointsTranslations[i + 1]);
+                Vector3 forward = (handPointsTranslations[i + 1] - handPointsTranslations[i]).normalized;
+
+                HandLines[i].transform.localPosition = handPointsTranslations[i];
+                HandLines[i].transform.forward = forward;
+                HandLines[i].transform.localScale = new Vector3(length, length, length);
+
             }
         }
     }
 
-    private void setPosition(int i, Vector3 forward, float length)
-    {
-        HandLines[i].transform.localPosition = handPointsTranslations[0];
-        HandLines[i].transform.forward = forward;
-        HandLines[i].transform.localScale = new Vector3(length, length, length);
-    }
+  
 
     private bool CanMoveHand()
     {
+        if (Roboy.GetComponent<RobodyMovement>().emergencyStop.activeInHierarchy) return false;
         //get left-down and up-right edge of camera view
-        Vector3 leftEdge= Camera.main.ViewportToWorldPoint(new Vector3(0, 0, 0));
-        Vector3 rightEdge = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, 0));
+        Vector3 leftEdge= camera.ViewportToWorldPoint(new Vector3(0, 0, 0));
+        Vector3 rightEdge = camera.ViewportToWorldPoint(new Vector3(1, 1, 0));
         
 
         for (int i = 0; i < handPointsTranslations.Length; i++)
@@ -167,7 +196,6 @@ public class HandTracking : MonoBehaviour
             for (i = 0; i < dangerZones.Length; i++)
             {
                 Vector3 position = dangerZones[i].transform.position;
-                position.x += dangerZones[i].GetComponent<DangerZone>().roomDecore.transform.position.x;
                 if (Vector3.Distance(handPointsTranslations[i], position) <= dangerZones[i].GetComponent<DangerZone>().GetInnerRange())
                 {
                     DangerZoneManager.GetComponent<DangerZoneManager>().StopRobot(i);
@@ -179,5 +207,43 @@ public class HandTracking : MonoBehaviour
 
         }
         return true;
+    }
+
+    private bool[] canMoveFinger(int fingerIndex)
+    {
+        bool[] ret = {true, true, true};
+        if (bottel.GetComponent<Grabbable>().hand.GetComponent<FingerController>().isRightGrab ||
+            bottel.GetComponent<Grabbable>().hand.GetComponent<FingerController>().isLeftGrab)
+        {
+            Vector3 distance = new Vector3(handPointsTranslations[fingerIndex].x - HandPoints[fingerIndex].transform.position.x,
+                handPointsTranslations[fingerIndex].y - HandPoints[fingerIndex].transform.position.y,
+                handPointsTranslations[fingerIndex].z - HandPoints[fingerIndex].transform.position.z);
+            for (int i = 0; i < 21; i++)
+            {
+                //check if complete hand is moving in same direction, while holding something
+                //if not, don't move the finger in this direction
+                Vector3 current = new Vector3(handPointsTranslations[i].x - HandPoints[i].transform.position.x,
+                    handPointsTranslations[i].y - HandPoints[i].transform.position.y,
+                    handPointsTranslations[i].z - HandPoints[i].transform.position.z);
+
+
+                if (!distance.x.Equals(current.x))
+                {
+                    ret[0] = false;
+                }
+
+                if (!distance.y.Equals(current.y))
+                {
+                    ret[1] = false;
+                }
+
+                if (!distance.z.Equals(current.z))
+                {
+                    ret[2] = false;
+                }
+            }
+        }
+
+        return ret;
     }
 }
