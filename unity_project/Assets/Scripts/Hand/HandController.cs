@@ -1,11 +1,10 @@
-//using Mediapipe.Unity.Tutorial;
-//using Microsoft.MixedReality.Toolkit;
-//using Microsoft.MixedReality.Toolkit.Input;
+/*using Mediapipe.Unity.Tutorial;
+using Microsoft.MixedReality.Toolkit;
+using Microsoft.MixedReality.Toolkit.Input;*/
 // using Microsoft.MixedReality.Toolkit.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum Handedness
@@ -21,7 +20,7 @@ public struct HandRotationOffset
     public float x; public float y; public float z;
 }
 
-public class HandController : MonoBehaviour//Singleton<HandController>
+public class HandController : MonoBehaviour // Singleton<HandController>
 {
     [Header("Hand Settings")]
     public Handedness currentHandedness = Handedness.Left;
@@ -66,13 +65,13 @@ public class HandController : MonoBehaviour//Singleton<HandController>
 
     public static void Freeze()
     {
-        //UI.ShowToast("Hands Frozen!", 1.5f);
+       // UI.ShowToast("Hands Frozen!", 1.5f);
         _isHandFrozen = true;
     }
 
     public static void Unfreeze()
     {
-        //UI.ShowToast("Hands Unfrozen!", 1.5f);
+       // UI.ShowToast("Hands Unfrozen!", 1.5f);
         _isHandFrozen = false;
     }
 
@@ -103,8 +102,8 @@ public class HandController : MonoBehaviour//Singleton<HandController>
 
         Quaternion deviceOrientation;
         Vector3 devicePosition;
-        /*
-        var smartphone = SmartphoneController.Instance.smartphonePointer;
+
+       /* var smartphone = SmartphoneController.Instance.smartphonePointer;
 
         GlobalVariableManager.Instance.GlobalQuaternions.TryGetValue("deviceOrientation", out deviceOrientation);
         GlobalVariableManager.Instance.GlobalVector3s.TryGetValue("devicePosition", out devicePosition);
@@ -123,7 +122,7 @@ public class HandController : MonoBehaviour//Singleton<HandController>
         SmartphoneController.Instance.ResetPointerPos();
         smartphone.transform.position += smartphoneDistanceRatio * (Quaternion.Euler(Vector3.up * robodyRotY) * (devicePosition - initPositionOffset));
 
-        
+
         switch (currentHandedness)
         {
             case Handedness.Left:
@@ -158,7 +157,7 @@ public class HandController : MonoBehaviour//Singleton<HandController>
                 break;
             default:
                 break;
-        }*/
+        }
 
     }
 
@@ -173,7 +172,7 @@ public class HandController : MonoBehaviour//Singleton<HandController>
         // Vector3 devicePosition;
         float deviceRange;
 
-        /*var smartphonePointer = SmartphoneController.Instance.smartphonePointer;
+        var smartphonePointer = SmartphoneController.Instance.smartphonePointer;
         var pointerLine = SmartphoneController.Instance.pointerLine;
 
         GlobalVariableManager.Instance.GlobalQuaternions.TryGetValue("deviceOrientation", out deviceOrientation);
@@ -183,7 +182,7 @@ public class HandController : MonoBehaviour//Singleton<HandController>
         
         smartphonePointer.transform.localRotation = deviceOrientation;
         SmartphoneController.Instance.SetPointerPosPointerMode(currentHandedness);
-        
+
         pointerLine.transform.localScale = new Vector3(pointerLine.transform.localScale.x, pointerLine.transform.localScale.y, deviceRange);
 
         switch (currentHandedness)
@@ -207,7 +206,7 @@ public class HandController : MonoBehaviour//Singleton<HandController>
                 break;
             default:
                 break;
-        }*/
+        }
         
     }
 
@@ -222,7 +221,7 @@ public class HandController : MonoBehaviour//Singleton<HandController>
         // Debug.Log($"screen width / height = {Screen.width} / {Screen.height}, screen pos raw = ({MediaPipeHandTracking.Instance.handRootScreenPos[0]}, {MediaPipeHandTracking.Instance.handRootScreenPos[1]}), " +
         //     $"hand screen pos = ({handScreenPosX}, {handScreenPosY}), to world = {leftHandWorldPos}");
 
-        /*switch (currentHandedness)
+        switch (currentHandedness)
         {
             case Handedness.Left:
                 Quaternion leftLookRotation = MediaPipeHandTracking.Instance.palmForward == Vector3.zero ?
@@ -239,7 +238,7 @@ public class HandController : MonoBehaviour//Singleton<HandController>
                 break;
             default:
                 break;
-        }*/
+        }
 
         // if (trackLeftHand)
         // {
@@ -360,7 +359,7 @@ public class HandController : MonoBehaviour//Singleton<HandController>
         //         //     Debug.Log("Spatial grip RotationData: " + interactionMapping.RotationData);
         //         // }
         //     }
-        // }
+        // }*/
     }
 
 }

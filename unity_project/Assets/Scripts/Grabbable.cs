@@ -8,16 +8,25 @@ public class Grabbable : MonoBehaviour
     public bool isInRangeRight = false;
 
     public float range = 0.2f;
+    public GameObject roboy;
+    private HandController hand;
+    private FingerController finger;
 
     public Transform scene;
     private bool _isGrabbedLeft = false;
     private bool _isGrabbedRight = false;
-    public GameObject hand;
+    public bool isPlaced = false;
+
+    void Start()
+    {
+        hand = roboy.GetComponent<HandController>();
+        finger = roboy.GetComponent<FingerController>();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(hand.GetComponent<HandController>().leftHandIKTarget.position, transform.position) <= range)
+        if (Vector3.Distance(hand.leftHandIKTarget.position, transform.position) <= range)
         {
             isInRangeLeft = true;
         }
@@ -26,7 +35,7 @@ public class Grabbable : MonoBehaviour
             isInRangeLeft = false;
         }
 
-        if (Vector3.Distance(hand.GetComponent<HandController>().rightHandIKTarget.position, transform.position) <= range)
+        if (Vector3.Distance(hand.rightHandIKTarget.position, transform.position) <= range)
         {
             isInRangeRight = true;
         }
@@ -35,35 +44,35 @@ public class Grabbable : MonoBehaviour
             isInRangeRight = false;
         }
 
-        if (hand.GetComponent<FingerController>().isLeftGrab && isInRangeLeft && (!_isGrabbedLeft && !_isGrabbedRight))
+        if (finger.isLeftGrab && isInRangeLeft && (!_isGrabbedLeft && !_isGrabbedRight))
         {
             Debug.Log("Left Grab");
             // transform.position = HandIK.Instance.leftGripPivot.position;
-            transform.SetParent(hand.GetComponent<FingerController>().leftGripPivot);
+            transform.SetParent(finger.leftGripPivot);
             // GetComponent<Rigidbody>().useGravity = false;
             // GetComponent<Rigidbody>().velocity = Vector3.zero;
             _isGrabbedLeft = true;
         }
 
-        else if (hand.GetComponent<FingerController>().isRightGrab && isInRangeRight && (!_isGrabbedLeft && !_isGrabbedRight))
+        else if (finger.isRightGrab && isInRangeRight && (!_isGrabbedLeft && !_isGrabbedRight))
         {
             Debug.Log("Right Grab");
             // transform.position = HandIK.Instance.rightGripPivot.position;
-            transform.SetParent(hand.GetComponent<FingerController>().rightGripPivot);
+            transform.SetParent(finger.rightGripPivot);
 
             // GetComponent<Rigidbody>().useGravity = false;
             // GetComponent<Rigidbody>().velocity = Vector3.zero;
             _isGrabbedRight = true;
         }
 
-        if (!hand.GetComponent<FingerController>().isLeftGrab && _isGrabbedLeft)
+        if (!finger.isLeftGrab && _isGrabbedLeft)
         {
             Debug.Log("Left Release");
             transform.SetParent(scene);
             _isGrabbedLeft = false;
         }
 
-        else if (!hand.GetComponent<FingerController>().isRightGrab && _isGrabbedRight)
+        else if (!finger.isRightGrab && _isGrabbedRight)
         {
             Debug.Log("Right Release");
             // GetComponent<Rigidbody>().useGravity = true;

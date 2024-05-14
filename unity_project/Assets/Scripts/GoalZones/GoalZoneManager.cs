@@ -27,10 +27,8 @@ public class GoalZoneManager : MonoBehaviour
                 && bottel.transform.position.y.Equals(foodTables[i].transform.position.y))
             {
                 foodTables[i].GetComponent<Light>().enabled = false;
-                if (roboy.GetComponent<FingerController>().isRightGrab)
-                    roboy.GetComponent<FingerController>().isRightGrab = false;
-                if (roboy.GetComponent<FingerController>().isLeftGrab)
-                    roboy.GetComponent<FingerController>().isLeftGrab = false;
+                bottel.GetComponent<Grabbable>().isPlaced = true;
+                text.text = "Task: finished; leave the room";
                 break;
             }
         }
@@ -41,10 +39,8 @@ public class GoalZoneManager : MonoBehaviour
                 && bottel.transform.position.y.Equals(tables[i].transform.position.y))
             {
                 tables[i].GetComponent<Light>().enabled = false;
-                if (roboy.GetComponent<FingerController>().isRightGrab)
-                    roboy.GetComponent<FingerController>().isRightGrab = false;
-                if (roboy.GetComponent<FingerController>().isLeftGrab)
-                    roboy.GetComponent<FingerController>().isLeftGrab = false;
+                bottel.GetComponent<Grabbable>().isPlaced = true;
+                text.text = "Task: finished; leave the room";
                 break;
             }
         }

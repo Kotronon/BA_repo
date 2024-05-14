@@ -1,14 +1,13 @@
-//using MagicLeap.MRTK.DeviceManagement.Input.Hands;
-//using Microsoft.MixedReality.Toolkit.Utilities;
-//using RosMessageTypes.Std;
+/*using MagicLeap.MRTK.DeviceManagement.Input.Hands;
+using Microsoft.MixedReality.Toolkit.Utilities;
+using RosMessageTypes.Std;*/
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 
-public class FingerController : MonoBehaviour//Singleton<FingerController>
+public class FingerController : MonoBehaviour // Singleton<FingerController>
 {
     public Quaternion[] ThumbDefault = new[] { Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 0) };
     public Quaternion[] IndexDefault = new[] { Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 0), Quaternion.Euler(0, 0, 0) };
@@ -49,13 +48,13 @@ public class FingerController : MonoBehaviour//Singleton<FingerController>
         { new Finger(Handedness.Left, FingerType.Middle), new []{ RobodyBones.LeftMiddleProximal, RobodyBones.LeftMiddleIntermediate, RobodyBones.LeftMiddleDistal }},
         { new Finger(Handedness.Left, FingerType.Ring),   new []{ RobodyBones.LeftRingProximal,   RobodyBones.LeftRingIntermediate,   RobodyBones.LeftRingDistal }},
         { new Finger(Handedness.Left, FingerType.Little),  new []{ RobodyBones.LeftLittleProximal, RobodyBones.LeftLittleIntermediate, RobodyBones.LeftLittleDistal }},
-    };
+    };*/
 
     [Range(0, 1)]
     public float leftGrip;
     [Range(0, 1)]
     public float rightGrip;
-    */
+
     public bool isLeftGrab = false;
     public bool isRightGrab = false;
 
@@ -70,9 +69,6 @@ public class FingerController : MonoBehaviour//Singleton<FingerController>
     public float grabTime = 0.5f;
     private float _leftGrabTime = 0;
     private float _rightGrabTime = 0;
-    
-    //check if bottel is standing; first then hand can loose grip
-    public GameObject zoneManager;
 
     // [Header("Left Fingers Percentage")]
     // [Range(0, 1)]
@@ -97,8 +93,8 @@ public class FingerController : MonoBehaviour//Singleton<FingerController>
     // public float rightRingGripPercentage;
     // [Range(0, 1)]
     // public float rightLittleGripPercentage;
-    /*
-    private Dictionary<Finger, float> fingerPercentages = new Dictionary<Finger, float>()
+
+    /*private Dictionary<Finger, float> fingerPercentages = new Dictionary<Finger, float>()
     {
         { new Finger(Handedness.Right, FingerType.Thumb),  0f },
         { new Finger(Handedness.Right, FingerType.Index),  0f },
@@ -155,9 +151,9 @@ public class FingerController : MonoBehaviour//Singleton<FingerController>
         { new Finger(Handedness.Left, FingerType.Middle), 60f },
         { new Finger(Handedness.Left, FingerType.Ring),   60f },
         { new Finger(Handedness.Left, FingerType.Little), 60f },
-    };*/
+    };
 
-    //private RobodyArmature _robodyArmature;
+    private RobodyArmature _robodyArmature;
 
     [Range(0, 1)]
     public float grabThreshold = 0.6f;
@@ -165,10 +161,10 @@ public class FingerController : MonoBehaviour//Singleton<FingerController>
     // Start is called before the first frame update
     void Start()
     {
-        //_robodyArmature = FindObjectOfType<RobodyArmature>();
+        _robodyArmature = FindObjectOfType<RobodyArmature>();
 
     }
-
+    */
     // Update is called once per frame
     void Update()
     {
@@ -194,14 +190,13 @@ public class FingerController : MonoBehaviour//Singleton<FingerController>
                     }
                 }
             }
-            *
+
             if (leftGrip >= 4)
             {
                 isLeftGrab = true;
             }
             else
             {
-                   
                 isLeftGrab = false;
             }
 
@@ -277,24 +272,24 @@ public class FingerController : MonoBehaviour//Singleton<FingerController>
 
                 Grip(Handedness.Right, rightGripPercentage);
             }
-        }*/
+        }
     }
 
     private void UpdateGrip()
     {
-       /* foreach (Finger finger in FingerBones.Keys)
+        foreach (Finger finger in FingerBones.Keys)
         {
             // Debug.Log($"finger: {finger.handedness} {finger.fingerType}, percentage: {fingerPercentages[finger]}");
             Grip(finger, fingerPercentages[finger]);
-        }*/
+        }
     }
 
-    /*public void SetFingerGripPercentage(Finger finger, float percentage)
+    public void SetFingerGripPercentage(Finger finger, float percentage)
     {
         fingerPercentages[finger] = percentage;
-    }*/
+    }
 
-    /*private void Grip(Finger finger, float percentage)
+    private void Grip(Finger finger, float percentage)
     {
         int i = 0;
         foreach (var bone in FingerBones[finger])
@@ -381,6 +376,6 @@ public class FingerController : MonoBehaviour//Singleton<FingerController>
                                                      ref angleVelocity,
                                                      fingerAngleLerpDuration);
         // Debug.Log($"fingerPercentages: {fingerPercentages[finger]}, angle: {angle}");
-        fingerAngleVelocities[finger] = angleVelocity;
-    }*/
+        fingerAngleVelocities[finger] = angleVelocity;*/
+    }
 }
