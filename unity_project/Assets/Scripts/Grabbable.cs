@@ -81,5 +81,9 @@ public class Grabbable : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        isPlaced = true;
+    }
 
 }

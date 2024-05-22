@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 111980684288056082}
   - component: {fileID: 2965123669509430975}
+  - component: {fileID: 4034368096166637289}
   m_Layer: 8
   m_Name: Robody
   m_TagString: RoboyCollider
@@ -50,6 +51,27 @@ MonoBehaviour:
   steerSpeed: 1
   rotateSpeed: 30
   emergencyStop: {fileID: 6658514324531147870, guid: ff486b0d4ee49204799f48edded571ff, type: 3}
+--- !u!65 &4034368096166637289
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111980684288345906}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.4, y: 3, z: 1.5}
+  m_Center: {x: -0.2, y: 1, z: 0.3}
 --- !u!1 &1066463277347805729
 GameObject:
   m_ObjectHideFlags: 0
@@ -589,7 +611,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4177823133385641360, guid: 8376e5037528d434cab49e987b7a4e72, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4177823133385641360, guid: 8376e5037528d434cab49e987b7a4e72, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3370,7 +3392,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4843654847952486734, guid: 62144f27e4481434eb5df25761971f60, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 4843654847952486734, guid: 62144f27e4481434eb5df25761971f60, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3972,7 +3994,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8930297768104274247, guid: ba34fd6dc50bef24e9136ba6f48132b2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 8930297768104274247, guid: ba34fd6dc50bef24e9136ba6f48132b2, type: 3}
       propertyPath: m_LocalPosition.y

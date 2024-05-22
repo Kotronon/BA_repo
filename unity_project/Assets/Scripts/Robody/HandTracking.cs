@@ -48,6 +48,7 @@ public class HandTracking : MonoBehaviour
     private void Start()
     {
         kalmanFilter = new Vector3(Q, R);
+        dangerZones = GameObject.FindGameObjectsWithTag("DangerZone");
     }
 
     // Update is called once per frame
@@ -191,13 +192,22 @@ public class HandTracking : MonoBehaviour
             for (i = 0; i < dangerZones.Length; i++)
             {
                 Vector3 position = dangerZones[i].transform.position;
-                if (Vector3.Distance(handPointsTranslations[i], position) <= dangerZones[i].GetComponent<DangerZone>().GetInnerRange() &&
+                //arms have smaller innerRanges, due to calculations
+                if (Vector3.Distance(handPointsTranslations[i], position) <= dangerZones[i].GetComponent<DangerZone>().GetInnerRange() -1 &&
                     !dangerZones[i].GetComponent<DangerZone>().getUserWantsToMoveOn())
                 {
                     DangerZoneManager.GetComponent<DangerZoneManager>().StopRobot(i);
 
                     return false;
                 }
+                else if (Vector3.Distance(handPointsTranslations[i], position) <=
+                         dangerZones[i].GetComponent<DangerZone>().GetOuterRange() - 1)
+                {
+                    dangerZones[i].GetComponent<Light>().color = Color.red;
+                }
+                else
+                    dangerZones[i].GetComponent<Light>().color = DangerZoneManager.GetComponent<DangerZoneManager>()
+                        .dangerZones[i].GetComponent<Light>().color;
             }
 
             //hand won't move if a finger tries to open fist while grabbable not at target zone
@@ -218,13 +228,7 @@ public class HandTracking : MonoBehaviour
     {
         bool ret = true;
         //is he holding something that is not placed at the correct place?
-        if (!bottel.GetComponent<Grabbable>().isPlaced &&
-            (bottel.GetComponent<Grabbable>().roboy.GetComponent<FingerController>().isRightGrab &&
-            (bottel.GetComponent<Grabbable>().roboy.GetComponent<HandController>().currentHandedness == Handedness.Right ||
-             bottel.GetComponent<Grabbable>().roboy.GetComponent<HandController>().currentHandedness == Handedness.Both) ||
-            bottel.GetComponent<Grabbable>().roboy.GetComponent<FingerController>().isLeftGrab &&
-            (bottel.GetComponent<Grabbable>().roboy.GetComponent<HandController>().currentHandedness == Handedness.Left ||
-             bottel.GetComponent<Grabbable>().roboy.GetComponent<HandController>().currentHandedness == Handedness.Both)))
+        if (!bottel.GetComponent<Grabbable>().isPlaced)
         {
             //distance between old and new position
             Vector3 distance = new Vector3(handPointsTranslations[fingerIndex].x - HandPoints[fingerIndex].transform.position.x,

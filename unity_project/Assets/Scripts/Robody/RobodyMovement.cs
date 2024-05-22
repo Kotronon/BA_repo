@@ -22,10 +22,14 @@ public class RobodyMovement : MonoBehaviour
     private Vector3 _steerDirection;
     private Vector3 oldDirection;
     public GameObject emergencyStop;
+    private int collide;
+    private int collideOld;
 
     private void Start()
     {
         emergencyStop.SetActive(false);
+        collide = 0;
+        collideOld = 0;
     }
 
     //private Direction _steerDirection = Direction.None;
@@ -34,14 +38,19 @@ public class RobodyMovement : MonoBehaviour
     {
         if (_isSteering)
         {
-           if(_steerDirection == Vector3.forward || Input.GetKeyDown(KeyCode.UpArrow))
-                    transform.position += transform.forward * steerSpeed * Time.deltaTime;
-           if(_steerDirection == Vector3.back || Input.GetKeyDown(KeyCode.DownArrow)) 
-                    transform.position += -transform.forward * steerSpeed * Time.deltaTime;
-           if(_steerDirection == Vector3.left || Input.GetKeyDown(KeyCode.LeftArrow))
-                    transform.Rotate(0.0f, -rotateSpeed * Time.deltaTime, 0.0f);
-           if(_steerDirection == Vector3.right || Input.GetKeyDown(KeyCode.RightArrow))
-                    transform.Rotate(0.0f, rotateSpeed * Time.deltaTime, 0.0f);
+
+            if (_steerDirection == Vector3.forward || Input.GetKeyDown(KeyCode.UpArrow) && collide == collideOld)
+            {
+                transform.position += transform.forward * steerSpeed * Time.deltaTime;
+                collide = 0;
+                collideOld = 0;
+            }
+            if (_steerDirection == Vector3.back || Input.GetKeyDown(KeyCode.DownArrow))
+                transform.position += -transform.forward * steerSpeed * Time.deltaTime;
+            if (_steerDirection == Vector3.left || Input.GetKeyDown(KeyCode.LeftArrow))
+                transform.Rotate(0.0f, -rotateSpeed * Time.deltaTime, 0.0f);
+            if (_steerDirection == Vector3.right || Input.GetKeyDown(KeyCode.RightArrow))
+                transform.Rotate(0.0f, rotateSpeed * Time.deltaTime, 0.0f);
         }
 
     }
@@ -57,6 +66,7 @@ public class RobodyMovement : MonoBehaviour
             _isSteering = true;
 
         }
+
         _steerDirection = direction;
     }
 
@@ -80,4 +90,9 @@ public class RobodyMovement : MonoBehaviour
         emergencyStop.SetActive(true);
     }
 
+    public void OnCollisionEnter(Collision other)
+    {
+        collideOld = collide;
+        collide++;
+    }
 }

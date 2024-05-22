@@ -12,6 +12,8 @@ public class DangerZone : MonoBehaviour
     private float outerRange;
     private float innerRange;
     private bool userWantsToMoveOn = false;
+    public int collide = 0;
+    public int collideOld = 0;
 
     // Start is called before the first frame update
     public void SetRanges(float inner, float outer)
@@ -52,4 +54,9 @@ public class DangerZone : MonoBehaviour
         return userWantsToMoveOn;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        collideOld = collide;
+        collide++;
+    }
 }
