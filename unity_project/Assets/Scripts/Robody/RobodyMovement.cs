@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.AI;
@@ -24,12 +25,19 @@ public class RobodyMovement : MonoBehaviour
     public GameObject emergencyStop;
     private int collide;
     private int collideOld;
+    private bool forward;
+    public TMP_Text errorText;
+    private Vector3 position;
+    private  Vector3 rotation;
 
     private void Start()
     {
         emergencyStop.SetActive(false);
         collide = 0;
         collideOld = 0;
+        forward = false;
+        position = transform.position;
+        rotation = transform.eulerAngles;
     }
 
     //private Direction _steerDirection = Direction.None;
@@ -38,19 +46,72 @@ public class RobodyMovement : MonoBehaviour
     {
         if (_isSteering)
         {
-
-            if (_steerDirection == Vector3.forward || Input.GetKeyDown(KeyCode.UpArrow) && collide == collideOld)
+            if (collide != collideOld)
             {
-                transform.position += transform.forward * steerSpeed * Time.deltaTime;
-                collide = 0;
-                collideOld = 0;
+                if ((Input.GetKeyDown(KeyCode.UpArrow)) && !forward)
+                {
+                    transform.position += transform.forward * steerSpeed * Time.deltaTime;
+                    position += transform.forward * steerSpeed * Time.deltaTime;
+                    forward = true;
+                    errorText.text = "";
+                    collide = 0;
+                    collideOld = 0 ;
+                }
+
+                if (( Input.GetKeyDown(KeyCode.DownArrow)) && forward)
+                {
+                    transform.position += -transform.forward * steerSpeed * Time.deltaTime;
+                    position += -transform.forward * steerSpeed * Time.deltaTime;
+                    forward = false;
+                    errorText.text = "";
+                    collide = 0;
+                    collideOld = 0;
+                }
+                else
+                {
+                    transform.position = position;
+                    transform.eulerAngles = rotation;
+                }
             }
-            if (_steerDirection == Vector3.back || Input.GetKeyDown(KeyCode.DownArrow))
-                transform.position += -transform.forward * steerSpeed * Time.deltaTime;
-            if (_steerDirection == Vector3.left || Input.GetKeyDown(KeyCode.LeftArrow))
-                transform.Rotate(0.0f, -rotateSpeed * Time.deltaTime, 0.0f);
-            if (_steerDirection == Vector3.right || Input.GetKeyDown(KeyCode.RightArrow))
-                transform.Rotate(0.0f, rotateSpeed * Time.deltaTime, 0.0f);
+            else
+            {
+                if ( Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    transform.position += transform.forward * steerSpeed * Time.deltaTime;
+                    position += transform.forward * steerSpeed * Time.deltaTime;
+                    forward = true;
+                }
+
+                if (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    transform.position += -transform.forward * steerSpeed * Time.deltaTime;
+                    position += -transform.forward * steerSpeed * Time.deltaTime;
+                    forward = false;
+
+                }
+
+                if (Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    transform.Rotate(0.0f, -rotateSpeed * Time.deltaTime, 0.0f);
+                    rotation.y -= rotateSpeed * Time.deltaTime;
+                }
+
+                if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    transform.Rotate(0.0f, rotateSpeed * Time.deltaTime, 0.0f);
+                    rotation.y += rotateSpeed * Time.deltaTime;
+                }
+                else
+                {
+                    transform.position = position;
+                    transform.eulerAngles = rotation;
+                }
+            }
+        }
+        else
+        {
+            transform.position = position;
+            transform.eulerAngles = rotation;
         }
 
     }
@@ -92,7 +153,11 @@ public class RobodyMovement : MonoBehaviour
 
     public void OnCollisionEnter(Collision other)
     {
-        collideOld = collide;
-        collide++;
+        if (other.gameObject.CompareTag("DangerZone"))
+        {
+            collideOld = collide;
+            collide++;
+            errorText.text = "Error: You are touching the human zone. Please move in the opposite direction.";
+        }
     }
 }

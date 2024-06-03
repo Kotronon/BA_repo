@@ -71,14 +71,14 @@ public class DangerZoneManager : MonoBehaviour
                  dangerZones[i].GetComponent<Light>().color = color;
                  current.setUserWantsToMoveOn(false);
              }*/
-            if (dangerZones[i].GetComponent<DangerZone>().collide > dangerZones[i].GetComponent<DangerZone>().collideOld)
+            /*if (dangerZones[i].GetComponent<DangerZone>().collide > dangerZones[i].GetComponent<DangerZone>().collideOld)
             {
-                robodyM.steerSpeed = 2f;
+                robodyM.steerSpeed = 0f;
             }
             else
             {
                 robodyM.steerSpeed = 4f;
-            }
+            }*/
         }
        
     }

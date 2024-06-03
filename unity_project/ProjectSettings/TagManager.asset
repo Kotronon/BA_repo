@@ -7,6 +7,8 @@ TagManager:
   - RoboyCollider
   - RoboyArms
   - DangerZone
+  - FoodTable
+  - Table
   layers:
   - Default
   - TransparentFX

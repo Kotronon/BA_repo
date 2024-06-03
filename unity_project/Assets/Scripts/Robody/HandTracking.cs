@@ -188,7 +188,7 @@ public class HandTracking : MonoBehaviour
                 errorText.text = "Error: Can't move hand out of the camera view.";
                 return false;
             }
-            //Too close to patient; check all possible dangerZones
+          /*  //Too close to patient; check all possible dangerZones
             for (i = 0; i < dangerZones.Length; i++)
             {
                 Vector3 position = dangerZones[i].transform.position;
@@ -209,7 +209,7 @@ public class HandTracking : MonoBehaviour
                     dangerZones[i].GetComponent<Light>().color = DangerZoneManager.GetComponent<DangerZoneManager>()
                         .dangerZones[i].GetComponent<Light>().color;
             }
-
+*/
             //hand won't move if a finger tries to open fist while grabbable not at target zone
             if (!canMoveFinger(i))
             {
