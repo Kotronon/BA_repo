@@ -10,17 +10,20 @@ public class GoalZoneManager : MonoBehaviour
     public GameObject[] foodTables;
     public GameObject[] tables;
     public GameObject goalChooser;
-    public GameObject bottel;
+    public GameObject[] bottle;
     public TMP_Text text;
     public GameObject roboy;
     private int targetID;
     private int targetPlace;
+    private int bottleCount;
     void Start()
     {
         foodTables = GameObject.FindGameObjectsWithTag("FoodTable");
         tables = GameObject.FindGameObjectsWithTag("Table");
+        bottle = GameObject.FindGameObjectsWithTag("Bottle");
         targetID = 0;
         targetPlace = 0;
+        bottleCount = 0;
     }
 
     void Update()
@@ -60,18 +63,20 @@ public class GoalZoneManager : MonoBehaviour
         {
             if (targetPlace == 0)
             {
-                if (foodTables[targetID].GetComponent<GoalZone>().placed)
+                if (foodTables[targetID].GetComponent<GoalZone>().placed && bottle[bottleCount].GetComponent<Grabbable>().isPlaced)
                 {
                     targetID++;
+                    bottleCount++;
                     foodTables[targetID].transform.GetChild(1).gameObject.SetActive(true);
                     text.text = "Task: bring bottle of water to next food table.";
                 }
             }
             else
             {
-                if (tables[targetID].GetComponent<GoalZone>().placed)
+                if (tables[targetID].GetComponent<GoalZone>().placed && bottle[bottleCount].GetComponent<Grabbable>().isPlaced)
                 {
                     targetID++;
+                    bottleCount++;
                     tables[targetID].transform.GetChild(1).gameObject.SetActive(true);
                     text.text = "Task: bring bottle of water to table in next room.";
                 }

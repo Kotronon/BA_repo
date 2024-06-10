@@ -83,7 +83,9 @@ public class Grabbable : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        isPlaced = true;
+        
+        if ((other.gameObject.CompareTag("Table") || other.gameObject.CompareTag("FoodTable")) && other.bounds.Contains(transform.position))
+            isPlaced = true;
     }
 
 }

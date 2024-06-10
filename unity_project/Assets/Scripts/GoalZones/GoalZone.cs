@@ -19,7 +19,11 @@ public class GoalZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        placed = true;
-        transform.GetChild(1).gameObject.SetActive(false);
+        if (other.gameObject.CompareTag("Bottle"))
+        {
+            placed = true;
+            transform.GetChild(1).gameObject.SetActive(false);
+        }
+            
     }
 }
