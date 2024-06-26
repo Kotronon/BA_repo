@@ -12,7 +12,7 @@ public class HandTracking : MonoBehaviour
 {
     [SerializeField] public GameObject[] HandPoints;
     [SerializeField] public GameObject[] HandLines;
-    public GameObject DangerZoneManager;
+    public GameObject ZoneManager;
 
     public float Scale = 100;
 
@@ -40,15 +40,13 @@ public class HandTracking : MonoBehaviour
     //difference from camera corner to max/min hand position
     private float offset = 4;
     Vector3[] handPointsTmp = new Vector3[21];
-    public GameObject[] dangerZones;
-    public GameObject bottel;
     public GameObject Roboy;
     public TMP_Text errorText;
+
 
     private void Start()
     {
         kalmanFilter = new Vector3(Q, R);
-        dangerZones = GameObject.FindGameObjectsWithTag("DangerZone");
     }
 
     // Update is called once per frame
@@ -228,7 +226,8 @@ public class HandTracking : MonoBehaviour
     {
         bool ret = true;
         //is he holding something that is not placed at the correct place?
-        if (!bottel.GetComponent<Grabbable>().isPlaced)
+        if (ZoneManager.GetComponent<GoalZoneManager>().bottle[ZoneManager.GetComponent<GoalZoneManager>().bottleCount].GetComponent<Grabbable>().isGrabed()
+            && !ZoneManager.GetComponent<GoalZoneManager>().bottle[ZoneManager.GetComponent<GoalZoneManager>().bottleCount].GetComponent<Grabbable>().isPlaced)
         {
             //distance between old and new position
             Vector3 distance = new Vector3(handPointsTranslations[fingerIndex].x - HandPoints[fingerIndex].transform.position.x,

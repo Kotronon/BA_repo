@@ -12,7 +12,7 @@ public class RobodyMovement : MonoBehaviour
     /// <summary>
     /// Steering speed. Unit per second.
     /// </summary>
-    public float steerSpeed = 4f;
+    private float steerSpeed = 4f;
 
     /// <summary>
     /// Rotating speed. Euler Angle per second.
@@ -159,5 +159,11 @@ public class RobodyMovement : MonoBehaviour
             collide++;
             errorText.text = "Error: You are touching the human zone. Please move in the opposite direction.";
         }
+    }
+
+    public void OnTriggerEnter(Collider collider)
+    {
+        if (steerSpeed.Equals(4f)) steerSpeed = 2;
+        else steerSpeed = 4;
     }
 }

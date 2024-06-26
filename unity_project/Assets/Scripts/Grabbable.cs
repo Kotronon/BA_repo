@@ -88,4 +88,9 @@ public class Grabbable : MonoBehaviour
             isPlaced = true;
     }
 
+    public bool isGrabed()
+    {
+        return _isGrabbedLeft || _isGrabbedRight;
+    }
+
 }
