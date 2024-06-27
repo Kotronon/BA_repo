@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2785060786520731122}
   m_Layer: 8
   m_Name: Watter Bottle
-  m_TagString: Untagged
+  m_TagString: Bottle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,4 +97,5 @@ MonoBehaviour:
   isInRangeLeft: 0
   isInRangeRight: 0
   range: 0.4
+  isPlaced: 0
   scene: {fileID: 0}

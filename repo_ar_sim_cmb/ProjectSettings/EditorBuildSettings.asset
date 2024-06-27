@@ -66,6 +66,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Main/Main.unity
     guid: dd93a9b8652e61545bda4f38d96698e0
   m_configObjects:
+    Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: 5228f34200ce0584cab380d623b03965, type: 2}
     UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 3f514caf30f13124586b84e8b0704465, type: 2}
     com.unity.xr.magicleap.magic_leap_settings: {fileID: 11400000, guid: 7035bf7f1b6b04547a47ee775fadb158, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: fd5d9ab8cf5566e44a6a78e4d8e5f26f, type: 2}

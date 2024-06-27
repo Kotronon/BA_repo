@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - DangerZone
+  - FoodTable
+  - Table
+  - RoboyArms
+  - RoboyCollider
+  - Bottle
   layers:
   - Default
   - TransparentFX

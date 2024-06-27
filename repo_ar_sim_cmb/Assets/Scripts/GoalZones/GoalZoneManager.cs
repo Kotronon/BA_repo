@@ -21,7 +21,7 @@ public class GoalZoneManager : MonoBehaviour
         foodTables = GameObject.FindGameObjectsWithTag("FoodTable");
         tables = GameObject.FindGameObjectsWithTag("Table");
         bottle = GameObject.FindGameObjectsWithTag("Bottle");
-        targetID = 0;
+        targetID = 0; 
         targetPlace = 0;
         bottleCount = 0;
     }
