@@ -143,6 +143,8 @@ namespace Mediapipe.Unity.Tutorial
         public float minPinky = 0f;
         [Range(0, 90f)]
         public float maxPinky = 60f;
+        public GameObject roboy;
+        public GameObject ZoneManager;
 
         struct MPFinger
         {
@@ -295,11 +297,16 @@ namespace Mediapipe.Unity.Tutorial
                             // Now the hand landmarks are updated.
                           /*  handScale = UpdateHandOrientation();
 
-                            for (int i = 0; i < 21; i++)
+                             if (handSkeleton.GetComponent<MediaPipeHandTrackingSkeleton>()
+                                                            .CanMoveHand(handPointsTranslations, ZoneManager, roboy))
                             {
-                                handPointsTranslations[i] *= handScale;
+                                for (int i = 0; i < 21; i++)
+                                {
+                                    handPointsTranslations[i] *= handScale;
 
-                                handSkeleton.GetComponent<MediaPipeHandTrackingSkeleton>().SetPointLocalPosition(i, handPointsTranslations[i]);
+                                    handSkeleton.GetComponent<MediaPipeHandTrackingSkeleton>()
+                                        .SetPointLocalPosition(i, handPointsTranslations[i]);
+                                }
                             }
 
                             foreach (var finger in fingers)

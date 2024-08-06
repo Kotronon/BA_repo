@@ -91,8 +91,15 @@ public class GoalZoneManager : MonoBehaviour
             foodTables[i].transform.GetChild(1).gameObject.SetActive(true);
         }
 
-        text.text = "Task: Get first water bottle";
-        bottle[bottleCount].transform.GetChild(0).gameObject.SetActive(true);
+        if (bottle[bottleCount].GetComponent<Grabbable>().isGrabed())
+        {
+            text.text = "Task: bring water bottle to a food table";
+        }
+        else
+        {
+            text.text = "Task: Get first water bottle";
+            bottle[bottleCount].transform.GetChild(0).gameObject.SetActive(true);
+        }
     }
     public void Tables()
     {
@@ -102,8 +109,26 @@ public class GoalZoneManager : MonoBehaviour
             //tables[i].GetComponent<Light>().enabled = true;
             tables[i].transform.GetChild(1).gameObject.SetActive(true);
         }
-        text.text = "Task: Get first water bottle";
-        targetPlace = 1;
-        bottle[bottleCount].transform.GetChild(0).gameObject.SetActive(true);
+        if (bottle[bottleCount].GetComponent<Grabbable>().isGrabed())
+        {
+            text.text = "Task: bring water bottle to a table";
+        }
+        else
+        {
+            text.text = "Task: Get first water bottle";
+            targetPlace = 1;
+            bottle[bottleCount].transform.GetChild(0).gameObject.SetActive(true);
+        }
+    }
+
+    public int getTarget()
+    {
+        return targetID;
+    }
+
+    public GameObject getGrabbed()
+    {
+        if (bottle[bottleCount].GetComponent<Grabbable>().isGrabed()) return bottle[bottleCount];
+        else return null;
     }
 }

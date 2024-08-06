@@ -11,6 +11,7 @@ public class MagicLeapHandTracking : MonoBehaviour
     public GameObject sphereThumb, sphereIndex, sphereWrist;
 
     private MLHandTracking.HandKeyPose[] _gestures;
+    public GameObject ZoneManager;
 
     private void Start()
     {
@@ -33,15 +34,15 @@ public class MagicLeapHandTracking : MonoBehaviour
 
     private void Update()
     {
-        if (GetGesture(MLHandTracking.Left, MLHandTracking.HandKeyPose.Ok))
+        if (GetGesture(MLHandTracking.Left, MLHandTracking.HandKeyPose.Ok) && !isGrabed())
         {
             pose = HandPoses.Ok;
         }
-        else if (GetGesture(MLHandTracking.Left, MLHandTracking.HandKeyPose.Finger))
+        else if (GetGesture(MLHandTracking.Left, MLHandTracking.HandKeyPose.Finger) && !isGrabed())
         {
             pose = HandPoses.Finger;
         }
-        else if (GetGesture(MLHandTracking.Left, MLHandTracking.HandKeyPose.OpenHand))
+        else if (GetGesture(MLHandTracking.Left, MLHandTracking.HandKeyPose.OpenHand) && !isGrabed())
         {
             pose = HandPoses.OpenHand;
         }
@@ -49,7 +50,7 @@ public class MagicLeapHandTracking : MonoBehaviour
         {
             pose = HandPoses.Fist;
         }
-        else if (GetGesture(MLHandTracking.Left, MLHandTracking.HandKeyPose.Thumb))
+        else if (GetGesture(MLHandTracking.Left, MLHandTracking.HandKeyPose.Thumb) && !isGrabed())
         {
             pose = HandPoses.Thumb;
         }
@@ -89,5 +90,9 @@ public class MagicLeapHandTracking : MonoBehaviour
         }
         return false;
     }
-
+    private bool isGrabed()
+    {
+        return ZoneManager.GetComponent<GoalZoneManager>()
+            .bottle[ZoneManager.GetComponent<GoalZoneManager>().bottleCount].GetComponent<Grabbable>().isGrabed();
+    }
 }

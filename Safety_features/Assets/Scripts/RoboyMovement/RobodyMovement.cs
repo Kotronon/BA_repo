@@ -101,7 +101,6 @@ public class RobodyMovement : MonoBehaviour
 
         //transform.position = position;
         //transform.rotation = Quaternion.Euler(0f, rotation, 0f);
-
     }
 
     public void Steer(MLInput.Controller.TouchpadGesture.GestureDirection direction)
@@ -165,5 +164,10 @@ public class RobodyMovement : MonoBehaviour
     {
         if (steerSpeed.Equals(4f)) steerSpeed = 2;
         else steerSpeed = 4;
+    }
+
+    public bool isStopped()
+    {
+        return stopped;
     }
 }

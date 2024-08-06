@@ -29,6 +29,9 @@ public class HandTracking : MonoBehaviour
     public float Q = 0.0001f;
     public float R = 0.01f;
     KalmanFilterVector3 kalmanFilter = new KalmanFilterVector3();
+    public Camera camera;
+    public GameObject Roboy;
+    public GameObject ZoneManager;
 
     private void Start()
     {
@@ -80,10 +83,13 @@ public class HandTracking : MonoBehaviour
         // trackedPalmLength = Vector3.Distance(handPointsTranslations[0], handPointsTranslations[5]);
         float handScale = palmLength / trackedPalmLength;
 
-        for (int i = 0; i < 21; i++)
+        if (CanMoveHand())
         {
-            handPointsTranslations[i] *= handScale;
-            HandPoints[i].transform.localPosition = handPointsTranslations[i];
+            for (int i = 0; i < 21; i++)
+            {
+                handPointsTranslations[i] *= handScale;
+                HandPoints[i].transform.localPosition = handPointsTranslations[i];
+            }
         }
 
         handRootTranslation *= handScale;
@@ -144,6 +150,77 @@ public class HandTracking : MonoBehaviour
             }
         }
     }
+    private bool CanMoveHand()
+    {
+        if (Roboy.GetComponent<RobodyMovement>().emergencyStop.activeInHierarchy)
+        {
+            Roboy.GetComponent<RobodyMovement>().errorText.text = "Error: Can't move hand. Emergency stop is still activated.";
+            return false;
+        }
+        //get left-down and up-right edge of camera view
+        Vector3 leftEdge = camera.ViewportToWorldPoint(new Vector3(0, 0, 0));
+        Vector3 rightEdge = camera.ViewportToWorldPoint(new Vector3(1, 1, 0));
 
-    
+
+        for (int i = 0; i < handPointsTranslations.Length; i++)
+        {
+            // hand won't move outside camera view
+            if (handPointsTranslations[i].x < leftEdge.x || handPointsTranslations[i].x > rightEdge.x ||
+                handPointsTranslations[i].y < leftEdge.y || handPointsTranslations[i].y < rightEdge.y)
+            {
+                Roboy.GetComponent<RobodyMovement>().errorText.text = "Error: Can't move hand out of the camera view.";
+                return false;
+            }
+
+            //hand won't move if a finger tries to open fist while grabbable not at target zone
+            if (!canMoveFinger(i))
+            {
+                Roboy.GetComponent<RobodyMovement>().errorText.text = "Error: Can't open hand until object was placed";
+                return false;
+            }
+
+
+        }
+
+        Roboy.GetComponent<RobodyMovement>().errorText.text = "";
+        return true;
+    }
+
+    private bool canMoveFinger(int fingerIndex)
+    {
+        bool ret = true;
+        //is he holding something that is not placed at the correct place?
+        if (ZoneManager.GetComponent<GoalZoneManager>().bottle[ZoneManager.GetComponent<GoalZoneManager>().bottleCount].GetComponent<Grabbable>().isGrabed()
+            && !ZoneManager.GetComponent<GoalZoneManager>().bottle[ZoneManager.GetComponent<GoalZoneManager>().bottleCount].GetComponent<Grabbable>().isPlaced)
+        {
+            //distance between old and new position
+            Vector3 distance = new Vector3(handPointsTranslations[fingerIndex].x - HandPoints[fingerIndex].transform.position.x,
+                handPointsTranslations[fingerIndex].y - HandPoints[fingerIndex].transform.position.y,
+                handPointsTranslations[fingerIndex].z - HandPoints[fingerIndex].transform.position.z);
+            //angle between old and new position
+            float angle = Vector3.Angle(handPointsTranslations[fingerIndex], HandPoints[fingerIndex].transform.position);
+            for (int i = 0; i < 21; i++)
+            {
+                //check if complete hand is moving in same direction, while holding something
+                //if not, don't move the finger in this direction
+                Vector3 current = new Vector3(handPointsTranslations[i].x - HandPoints[i].transform.position.x,
+                    handPointsTranslations[i].y - HandPoints[i].transform.position.y,
+                    handPointsTranslations[i].z - HandPoints[i].transform.position.z);
+                float currentAngle = Vector3.Angle(handPointsTranslations[i], HandPoints[i].transform.position);
+
+                if ((angle == 0 || angle == 180) && !distance.Equals(current))
+                {
+                    //hand moving in horizontal or vertical way -> all distances need to be the same
+                    //otherwise fist will open
+                    return false;
+                }
+                //moves with angle -> the points need to move in the same angle
+
+                else if (!angle.Equals(currentAngle)) return false;
+            }
+        }
+
+        return ret;
+    }
+
 }

@@ -93,4 +93,9 @@ public class Grabbable : MonoBehaviour
         return _isGrabbedLeft || _isGrabbedRight;
     }
 
+    public void SetGrabbed(bool grabbed)
+    {
+        _isGrabbedLeft = grabbed;
+    }
+
 }
