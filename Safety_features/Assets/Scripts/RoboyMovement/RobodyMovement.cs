@@ -18,7 +18,7 @@ public class RobodyMovement : MonoBehaviour
     /// <summary>
     /// Rotating speed. Euler Angle per second.
     /// </summary>
-    public float rotateSpeed = 30f;
+    private float rotateSpeed = 30f;
 
     private bool _isSteering = true;
     private Vector3 _steerDirection;
@@ -30,6 +30,9 @@ public class RobodyMovement : MonoBehaviour
     private MLInput.Controller.TouchpadGesture.GestureDirection oldtouchdirection;
     private MLInput.Controller controller;
     private bool stopped;
+    private Vector3 position;
+    private float rotation;
+
     private void Start()
     {
         emergencyStop.SetActive(false);
@@ -38,24 +41,27 @@ public class RobodyMovement : MonoBehaviour
         controller = MLInput.GetController(MLInput.Hand.Left);
         touchdirection = MLInput.Controller.TouchpadGesture.GestureDirection.None;
         oldtouchdirection = MLInput.Controller.TouchpadGesture.GestureDirection.None;
+        position = transform.position;
+        rotation = transform.rotation.y;
     }
 
     //private Direction _steerDirection = Direction.None;
 
     private void Update()
     {
-        if (_isSteering && !stopped)
+        if (_isSteering && !stopped && controller.Touch1Active)
         {
             MLInput.Controller.TouchpadGesture.GestureDirection current = MLInput.Controller.TouchpadGesture.GestureDirection.None;
-            if (controller.CurrentTouchpadGesture.Direction != MLInput.Controller.TouchpadGesture.GestureDirection.None)
+            if (controller.CurrentTouchpadGesture.Type == MLInput.Controller.TouchpadGesture.GestureType.Swipe || controller.CurrentTouchpadGesture.Type == MLInput.Controller.TouchpadGesture.GestureType.Scroll)
                 current = controller.CurrentTouchpadGesture.Direction;
            
             switch (current)
             {
                 case MLInput.Controller.TouchpadGesture.GestureDirection.Up:
-                    if (collide == 0 || touchdirection != MLInput.Controller.TouchpadGesture.GestureDirection.Up)
+                    if (collide == 0 || touchdirection != MLInput.Controller.TouchpadGesture.GestureDirection.Up) 
                     {
                         transform.position += transform.forward * steerSpeed * Time.deltaTime;
+                        //position += transform.forward * steerSpeed * Time.deltaTime;
                         oldtouchdirection = touchdirection;
                         touchdirection = current;
                     }
@@ -64,6 +70,7 @@ public class RobodyMovement : MonoBehaviour
                     if (collide == 0 || touchdirection != MLInput.Controller.TouchpadGesture.GestureDirection.Down)
                     {
                         transform.position -= transform.forward * steerSpeed * Time.deltaTime;
+                        //position -= transform.forward * steerSpeed * Time.deltaTime;
                         oldtouchdirection = touchdirection;
                         touchdirection = current;
                     }
@@ -72,6 +79,7 @@ public class RobodyMovement : MonoBehaviour
                     if (collide == 0)
                     {
                         transform.Rotate(0.0f, -rotateSpeed * Time.deltaTime, 0.0f);
+                        //rotation -= rotateSpeed * Time.deltaTime;
                         oldtouchdirection = touchdirection;
                         touchdirection = current;
                     }
@@ -80,6 +88,7 @@ public class RobodyMovement : MonoBehaviour
                     if (collide == 0)
                     {
                         transform.Rotate(0.0f, +rotateSpeed * Time.deltaTime, 0.0f);
+                        //rotation += rotateSpeed * Time.deltaTime;
                         oldtouchdirection = touchdirection;
                         touchdirection = current;
                     }
@@ -89,6 +98,9 @@ public class RobodyMovement : MonoBehaviour
             }
             
         }
+
+        //transform.position = position;
+        //transform.rotation = Quaternion.Euler(0f, rotation, 0f);
 
     }
 
@@ -110,7 +122,7 @@ public class RobodyMovement : MonoBehaviour
 
     public void Stop()
     {
-        oldDirection = _steerDirection;
+        oldtouchdirection = touchdirection;
         Steer(MLInput.Controller.TouchpadGesture.GestureDirection.None);
         _isSteering = false;
     }

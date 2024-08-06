@@ -12,7 +12,7 @@ public class GazeSelector : Singleton<GazeSelector>
     public Vector3 gazePoint;
     private MLInput.Controller controller;
 
-    public string[] selectableLayers = new[] { "MainMenuUI", "SceneUI" };
+    public string[] selectableLayers = new[] { "MainMenuUI" };//, "SceneUI" };
 
     void Start()
     {

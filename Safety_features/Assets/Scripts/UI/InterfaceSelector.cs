@@ -22,10 +22,26 @@ public class InterfaceSelector : MonoBehaviour
     void Update()
     {
         transform.rotation = controller.Orientation;
-
         RaycastHit hit;
+        bool found = false;
         if (Physics.Raycast(transform.position, transform.forward, out hit, 100f))
         {
+            for (int i = 0; i < 8; i++)
+            {
+                if (hit.collider.transform.gameObject.layer == 9)
+                {
+                    found = true;
+                    break;
+                }
+                //check if behind the collision object the button is, that the user wants to press
+                if (Physics.Raycast(transform.position + transform.forward * (i+1), transform.forward, out hit, 100f))
+                    continue;
+                else break;
+
+            }
+        }
+        if(found){
+
             beamLine.useWorldSpace = true;
             beamLine.SetPosition(0, transform.position);
             beamLine.SetPosition(1, hit.point);
