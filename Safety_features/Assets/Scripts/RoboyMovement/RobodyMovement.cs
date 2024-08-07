@@ -60,17 +60,19 @@ public class RobodyMovement : MonoBehaviour
                 case MLInput.Controller.TouchpadGesture.GestureDirection.Up:
                     if (collide == 0 || touchdirection != MLInput.Controller.TouchpadGesture.GestureDirection.Up) 
                     {
-                        transform.position += transform.forward * steerSpeed * Time.deltaTime;
-                        //position += transform.forward * steerSpeed * Time.deltaTime;
+                        //transform.position += transform.forward * steerSpeed * Time.deltaTime;
+                        position += transform.forward * steerSpeed * Time.deltaTime;
                         oldtouchdirection = touchdirection;
                         touchdirection = current;
+                        errorText.text = "Error:";
                     }
+                    else errorText.text = "Error: You are touching the human zone.\n Please move in the opposite direction.";
                     break;
                 case MLInput.Controller.TouchpadGesture.GestureDirection.Down:
                     if (collide == 0 || touchdirection != MLInput.Controller.TouchpadGesture.GestureDirection.Down)
                     {
-                        transform.position -= transform.forward * steerSpeed * Time.deltaTime;
-                        //position -= transform.forward * steerSpeed * Time.deltaTime;
+                        //transform.position -= transform.forward * steerSpeed * Time.deltaTime;
+                        position -= transform.forward * steerSpeed * Time.deltaTime;
                         oldtouchdirection = touchdirection;
                         touchdirection = current;
                     }
@@ -78,17 +80,19 @@ public class RobodyMovement : MonoBehaviour
                 case MLInput.Controller.TouchpadGesture.GestureDirection.Left:
                     if (collide == 0)
                     {
-                        transform.Rotate(0.0f, -rotateSpeed * Time.deltaTime, 0.0f);
-                        //rotation -= rotateSpeed * Time.deltaTime;
+                        //transform.Rotate(0.0f, -rotateSpeed * Time.deltaTime, 0.0f);
+                        rotation -= rotateSpeed * Time.deltaTime;
                         oldtouchdirection = touchdirection;
-                        touchdirection = current;
+                        touchdirection = current; 
+                        errorText.text = "Error:";
                     }
+                    else errorText.text = "Error: You are touching the human zone.\n Please move in the opposite direction.";
                     break;
                 case MLInput.Controller.TouchpadGesture.GestureDirection.Right:
                     if (collide == 0)
                     {
-                        transform.Rotate(0.0f, +rotateSpeed * Time.deltaTime, 0.0f);
-                        //rotation += rotateSpeed * Time.deltaTime;
+                        //transform.Rotate(0.0f, +rotateSpeed * Time.deltaTime, 0.0f);
+                        rotation += rotateSpeed * Time.deltaTime;
                         oldtouchdirection = touchdirection;
                         touchdirection = current;
                     }
@@ -99,8 +103,9 @@ public class RobodyMovement : MonoBehaviour
             
         }
 
-        //transform.position = position;
+        transform.position = position;
         //transform.rotation = Quaternion.Euler(0f, rotation, 0f);
+        transform.eulerAngles = new Vector3(0f, rotation, 0f);
     }
 
     public void Steer(MLInput.Controller.TouchpadGesture.GestureDirection direction)
@@ -146,7 +151,9 @@ public class RobodyMovement : MonoBehaviour
         if (other.gameObject.CompareTag("DangerZone"))
         {
             collide++;
+            errorText.gameObject.SetActive(false);
             errorText.text = "Error: You are touching the human zone.\n Please move in the opposite direction.";
+            errorText.gameObject.SetActive(true);
         }
         
     }
@@ -156,7 +163,9 @@ public class RobodyMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("DangerZone"))
         {
             collide = 0;
+            errorText.gameObject.SetActive(false);
             errorText.text = "Error:";
+            errorText.gameObject.SetActive(true);
         }
     }
 
