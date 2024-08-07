@@ -64,9 +64,15 @@ public class RobodyMovement : MonoBehaviour
                         position += transform.forward * steerSpeed * Time.deltaTime;
                         oldtouchdirection = touchdirection;
                         touchdirection = current;
-                        errorText.text = "Error:";
+                        //errorText.text = "Error:";
+                        errorText.SetText("Error:");
+                        errorText.ForceMeshUpdate(true);
                     }
-                    else errorText.text = "Error: You are touching the human zone.\n Please move in the opposite direction.";
+                    else
+                    {
+                        errorText.SetText("Error: You are touching the human zone.\n Please move in the opposite direction.");
+                        errorText.ForceMeshUpdate(true);
+                    }
                     break;
                 case MLInput.Controller.TouchpadGesture.GestureDirection.Down:
                     if (collide == 0 || touchdirection != MLInput.Controller.TouchpadGesture.GestureDirection.Down)
@@ -75,6 +81,13 @@ public class RobodyMovement : MonoBehaviour
                         position -= transform.forward * steerSpeed * Time.deltaTime;
                         oldtouchdirection = touchdirection;
                         touchdirection = current;
+                        errorText.SetText("Error:");
+                        errorText.ForceMeshUpdate(true);
+                    }
+                    else
+                    {
+                        errorText.SetText("Error: You are touching the human zone.\n Please move in the opposite direction.");
+                        errorText.ForceMeshUpdate(true);
                     }
                     break;
                 case MLInput.Controller.TouchpadGesture.GestureDirection.Left:
@@ -84,9 +97,12 @@ public class RobodyMovement : MonoBehaviour
                         rotation -= rotateSpeed * Time.deltaTime;
                         oldtouchdirection = touchdirection;
                         touchdirection = current; 
-                        errorText.text = "Error:";
                     }
-                    else errorText.text = "Error: You are touching the human zone.\n Please move in the opposite direction.";
+                    else
+                    {
+                        errorText.SetText("Error: You are touching the human zone.\n Please move in the opposite direction.");
+                        errorText.ForceMeshUpdate(true);
+                    }
                     break;
                 case MLInput.Controller.TouchpadGesture.GestureDirection.Right:
                     if (collide == 0)
@@ -95,6 +111,11 @@ public class RobodyMovement : MonoBehaviour
                         rotation += rotateSpeed * Time.deltaTime;
                         oldtouchdirection = touchdirection;
                         touchdirection = current;
+                    }
+                    else
+                    {
+                        errorText.SetText("Error: You are touching the human zone.\n Please move in the opposite direction.");
+                        errorText.ForceMeshUpdate(true);
                     }
                     break;
                 default:
@@ -151,9 +172,8 @@ public class RobodyMovement : MonoBehaviour
         if (other.gameObject.CompareTag("DangerZone"))
         {
             collide++;
-            errorText.gameObject.SetActive(false);
-            errorText.text = "Error: You are touching the human zone.\n Please move in the opposite direction.";
-            errorText.gameObject.SetActive(true);
+            errorText.SetText("Error: You are touching the human zone.\n Please move in the opposite direction.");
+            errorText.ForceMeshUpdate(true);
         }
         
     }
@@ -163,9 +183,8 @@ public class RobodyMovement : MonoBehaviour
         if (collision.gameObject.CompareTag("DangerZone"))
         {
             collide = 0;
-            errorText.gameObject.SetActive(false);
-            errorText.text = "Error:";
-            errorText.gameObject.SetActive(true);
+            errorText.SetText("Error:");
+            errorText.ForceMeshUpdate(true);
         }
     }
 

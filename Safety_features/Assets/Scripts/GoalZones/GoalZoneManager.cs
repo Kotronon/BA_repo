@@ -31,9 +31,11 @@ public class GoalZoneManager : MonoBehaviour
         if (targetPlace == 0 && targetID == foodTables.Length ||
             targetPlace == 1 && targetID == tables.Length)
         {
-            text.gameObject.SetActive(false);
-            text.text = "Task: finished.";
-            text.gameObject.SetActive(true);
+            //text.text = "Task: finished.";
+            text.SetText("Task: finished");
+            text.ForceMeshUpdate(true);
+            //text.SetCharArray("Task: finished.".ToCharArray());
+            //text.SetAllDirty();
         }
         else if (bottle[bottleCount].GetComponent<Grabbable>().isPlaced)
         {
@@ -45,9 +47,9 @@ public class GoalZoneManager : MonoBehaviour
                     {
                         //foodTables[i].GetComponent<Light>().enabled = false;
                         foodTables[i].transform.GetChild(1).gameObject.SetActive(false);
-                        text.gameObject.SetActive(false);
-                        text.text = "Task: get next water bottle";
-                        text.gameObject.SetActive(true);
+                        //text.text = "Task: get next water bottle";
+                        text.SetText("Task: get next water bottle");
+                        text.ForceMeshUpdate(true);
                         bottleCount++;
                         bottle[bottleCount].transform.GetChild(0).gameObject.SetActive(true);
                         break;
@@ -63,9 +65,9 @@ public class GoalZoneManager : MonoBehaviour
                     {
                         //foodTables[i].GetComponent<Light>().enabled = false;
                         tables[i].transform.GetChild(1).gameObject.SetActive(false);
-                        text.gameObject.SetActive(false);
-                        text.text = "Task: get next water bottle";
-                        text.gameObject.SetActive(true);
+                        //text.text = "Task: get next water bottle";
+                        text.SetText("Task: get next water bottle");
+                        text.ForceMeshUpdate(true);
                         bottleCount++;
                         bottle[bottleCount].transform.GetChild(0).gameObject.SetActive(true);
                         break;
@@ -76,24 +78,23 @@ public class GoalZoneManager : MonoBehaviour
 
         else if (!bottle[bottleCount].GetComponent<Grabbable>().isGrabed())
         {
-            text.gameObject.SetActive(false);
-            text.text = "Task: get next water bottle";
-            text.gameObject.SetActive(true);
+            text.SetText("Task: get next water bottle");
+            text.ForceMeshUpdate(true);
         }
         else
         {
             if (targetID == 0)
             {
-                text.gameObject.SetActive(false);
-                text.text = "Task: bring water bottle to a food table";
-                text.gameObject.SetActive(true);
+                //text.text = "Task: bring water bottle to a food table";
+                text.SetText("Task: get next water bottle");
+                text.ForceMeshUpdate(true);
             }
 
             if (targetID == 1)
             {
-                text.gameObject.SetActive(false);
-                text.text = "Task: bring water bottle to a table";
-                text.gameObject.SetActive(true);
+                //text.text = "Task: bring water bottle to a table";
+                text.SetText("Task: bring water bottle to a table");
+                text.ForceMeshUpdate(true);
             }
         }
     }
@@ -109,17 +110,16 @@ public class GoalZoneManager : MonoBehaviour
 
         if (bottle[bottleCount].GetComponent<Grabbable>().isGrabed())
         {
-            text.gameObject.SetActive(false);
-            text.text = "Task: bring water bottle to a food table";
-            text.gameObject.SetActive(true);
+            text.SetText("Task: bring water bottle to a food table");
+            text.ForceMeshUpdate(true);
         }
         else
         {
-            text.gameObject.SetActive(false);
-            text.text = "Task: Get first water bottle";
-            text.gameObject.SetActive(true);
-            bottle[bottleCount].transform.GetChild(0).gameObject.SetActive(true);
+            text.SetText("Task: Get first water bottle");
+            text.ForceMeshUpdate(true);
+        bottle[bottleCount].transform.GetChild(0).gameObject.SetActive(true);
         }
+
     }
     public void Tables()
     {
@@ -132,17 +132,16 @@ public class GoalZoneManager : MonoBehaviour
         targetPlace = 1;
         if (bottle[bottleCount].GetComponent<Grabbable>().isGrabed())
         {
-            text.gameObject.SetActive(false);
-            text.text = "Task: bring water bottle to a table";
-            text.gameObject.SetActive(true);
+            text.SetText("Task: bring water bottle to a table");
+            text.ForceMeshUpdate(true);
         }
         else
         {
-            text.gameObject.SetActive(false);
-            text.text = "Task: Get first water bottle";
-            text.gameObject.SetActive(true);
+            text.SetText("Task: Get first water bottle");
+            text.ForceMeshUpdate(true);
             bottle[bottleCount].transform.GetChild(0).gameObject.SetActive(true);
         }
+
     }
 
     public int getTarget()

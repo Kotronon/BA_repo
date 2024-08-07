@@ -39,7 +39,7 @@ public class InterfaceSelector : MonoBehaviour
             {
                 hit.collider.transform.gameObject.GetComponent<GazeButton>().Press();
             }
-            else if (hit.collider.transform.gameObject.CompareTag("Botle") && controller.TriggerValue > 0.3f)
+            /*else if (hit.collider.transform.gameObject.CompareTag("Botle") && controller.TriggerValue > 0.3f)
             {
                 if (transform.parent.gameObject.GetComponent<RobodyMovement>().isStopped())
                 {
@@ -93,7 +93,7 @@ public class InterfaceSelector : MonoBehaviour
             else
             {
                 errorText.text = "Error:";
-            }
+            }*/
         }
         else
         {

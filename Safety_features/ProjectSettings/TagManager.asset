@@ -11,6 +11,8 @@ TagManager:
   - RoboyCollider
   - RoboyArms
   - GoalZoneManager
+  - Task
+  - Error
   layers:
   - Default
   - TransparentFX
