@@ -20,8 +20,8 @@ public class GoalZoneManager : MonoBehaviour
     {
         foodTables = GameObject.FindGameObjectsWithTag("FoodTable");
         tables = GameObject.FindGameObjectsWithTag("Table");
-        bottle = GameObject.FindGameObjectsWithTag("Bottle");
-        targetID = 0;
+        bottle = GameObject.FindGameObjectsWithTag("Botle");
+        targetID = -1;
         targetPlace = 0;
         bottleCount = 0;
     }
@@ -76,7 +76,7 @@ public class GoalZoneManager : MonoBehaviour
             }
         }
 
-        else if (!bottle[bottleCount].GetComponent<Grabbable>().isGrabed())
+        else if (!bottle[bottleCount].GetComponent<Grabbable>().isGrabed() && targetID != -1)
         {
             text.SetText("Task: get next water bottle");
             text.ForceMeshUpdate(true);
@@ -90,12 +90,14 @@ public class GoalZoneManager : MonoBehaviour
                 text.ForceMeshUpdate(true);
             }
 
-            if (targetID == 1)
+            else if (targetID == 1)
             {
                 //text.text = "Task: bring water bottle to a table";
                 text.SetText("Task: bring water bottle to a table");
                 text.ForceMeshUpdate(true);
             }
+           
+
         }
     }
 
@@ -108,6 +110,7 @@ public class GoalZoneManager : MonoBehaviour
             foodTables[i].transform.GetChild(1).gameObject.SetActive(true);
         }
 
+        targetID = 0;
         if (bottle[bottleCount].GetComponent<Grabbable>().isGrabed())
         {
             text.SetText("Task: bring water bottle to a food table");
@@ -117,7 +120,7 @@ public class GoalZoneManager : MonoBehaviour
         {
             text.SetText("Task: Get first water bottle");
             text.ForceMeshUpdate(true);
-        bottle[bottleCount].transform.GetChild(0).gameObject.SetActive(true);
+            bottle[bottleCount].transform.GetChild(0).gameObject.SetActive(true);
         }
 
     }

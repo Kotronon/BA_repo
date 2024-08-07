@@ -70,7 +70,7 @@ public class RobodyMovement : MonoBehaviour
                     }
                     else
                     {
-                        errorText.SetText("Error: You are touching the human zone.\n Please move in the opposite direction.");
+                        errorText.SetText("Error: You are touching the human zone.");
                         errorText.ForceMeshUpdate(true);
                     }
                     break;
@@ -86,7 +86,7 @@ public class RobodyMovement : MonoBehaviour
                     }
                     else
                     {
-                        errorText.SetText("Error: You are touching the human zone.\n Please move in the opposite direction.");
+                        errorText.SetText("Error: You are touching the human zone.");
                         errorText.ForceMeshUpdate(true);
                     }
                     break;
@@ -100,7 +100,7 @@ public class RobodyMovement : MonoBehaviour
                     }
                     else
                     {
-                        errorText.SetText("Error: You are touching the human zone.\n Please move in the opposite direction.");
+                        errorText.SetText("Error: You are touching the human zone.");
                         errorText.ForceMeshUpdate(true);
                     }
                     break;
@@ -114,7 +114,7 @@ public class RobodyMovement : MonoBehaviour
                     }
                     else
                     {
-                        errorText.SetText("Error: You are touching the human zone.\n Please move in the opposite direction.");
+                        errorText.SetText("Error: You are touching the human zone.");
                         errorText.ForceMeshUpdate(true);
                     }
                     break;
@@ -172,7 +172,7 @@ public class RobodyMovement : MonoBehaviour
         if (other.gameObject.CompareTag("DangerZone"))
         {
             collide++;
-            errorText.SetText("Error: You are touching the human zone.\n Please move in the opposite direction.");
+            errorText.SetText("Error: You are touching the human zone.");
             errorText.ForceMeshUpdate(true);
         }
         
