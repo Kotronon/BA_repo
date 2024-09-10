@@ -32,6 +32,7 @@ public class RobodyMovement : MonoBehaviour
     private bool stopped;
     private Vector3 position;
     private float rotation;
+    private string opDir = "backwards";
 
     private void Start()
     {
@@ -67,10 +68,11 @@ public class RobodyMovement : MonoBehaviour
                         //errorText.text = "Error:";
                         errorText.SetText("Error:");
                         errorText.ForceMeshUpdate(true);
+                        opDir = "backwards";
                     }
                     else
                     {
-                        errorText.SetText("Error: You are touching the human zone.");
+                        errorText.SetText("Error: You are touching the human zone. \n Please move " + opDir + ".");
                         errorText.ForceMeshUpdate(true);
                     }
                     break;
@@ -83,10 +85,11 @@ public class RobodyMovement : MonoBehaviour
                         touchdirection = current;
                         errorText.SetText("Error:");
                         errorText.ForceMeshUpdate(true);
+                        opDir = "forwards";
                     }
                     else
                     {
-                        errorText.SetText("Error: You are touching the human zone.");
+                        errorText.SetText("Error: You are touching the human zone. \n Please move " + opDir + ".");
                         errorText.ForceMeshUpdate(true);
                     }
                     break;
@@ -100,8 +103,10 @@ public class RobodyMovement : MonoBehaviour
                     }
                     else
                     {
-                        errorText.SetText("Error: You are touching the human zone.");
+                        errorText.SetText("Error: You are touching the human zone. \n Please move " + opDir + ".");
                         errorText.ForceMeshUpdate(true);
+                        opDir = "backwards";
+                        touchdirection = MLInput.Controller.TouchpadGesture.GestureDirection.Up;
                     }
                     break;
                 case MLInput.Controller.TouchpadGesture.GestureDirection.Right:
@@ -114,8 +119,10 @@ public class RobodyMovement : MonoBehaviour
                     }
                     else
                     {
-                        errorText.SetText("Error: You are touching the human zone.");
+                        errorText.SetText("Error: You are touching the human zone.  \n Please move " + opDir + ".");
                         errorText.ForceMeshUpdate(true);
+                        opDir = "backwards";
+                        touchdirection = MLInput.Controller.TouchpadGesture.GestureDirection.Up;
                     }
                     break;
                 default:
@@ -126,6 +133,7 @@ public class RobodyMovement : MonoBehaviour
 
         transform.position = position;
         //transform.rotation = Quaternion.Euler(0f, rotation, 0f);
+        //errorText.SetText("Error: You are touching the human zone. Please move " + opDir + ".");
         transform.eulerAngles = new Vector3(0f, rotation, 0f);
     }
 
@@ -171,8 +179,9 @@ public class RobodyMovement : MonoBehaviour
     {
         if (other.gameObject.CompareTag("DangerZone"))
         {
+
             collide++;
-            errorText.SetText("Error: You are touching the human zone.");
+            errorText.SetText("Error: You are touching the human zone. \n Please move " + opDir + ".");
             errorText.ForceMeshUpdate(true);
         }
         

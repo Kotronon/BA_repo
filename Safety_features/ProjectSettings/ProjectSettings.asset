@@ -176,7 +176,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.YinfengYu.ARSimEnviroment
-    Lumin: com.YinfengYu.ARSimEnvironment
+    Lumin: com.KatharinaMiller.Safetyfeatures
     Standalone: com.YinfengYu.ARSimEnvironment
     iPhone: com.YinfengYu.ARSimEnvironment
   buildNumber:

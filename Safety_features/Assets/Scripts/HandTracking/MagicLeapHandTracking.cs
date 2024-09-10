@@ -15,7 +15,7 @@ public class MagicLeapHandTracking : MonoBehaviour
 
     private void Start()
     {
-        // MLHandTracking.Start();
+         MLHandTracking.Start();
         _gestures = new MLHandTracking.HandKeyPose[5];
         _gestures[0] = MLHandTracking.HandKeyPose.Ok;
         _gestures[1] = MLHandTracking.HandKeyPose.Finger;
@@ -28,7 +28,7 @@ public class MagicLeapHandTracking : MonoBehaviour
 
     private void OnDestroy()
     {
-        // MLHandTracking.Stop();
+         MLHandTracking.Stop();
     }
 
 
